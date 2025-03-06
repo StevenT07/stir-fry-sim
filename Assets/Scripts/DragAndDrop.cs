@@ -9,24 +9,30 @@ using UnityEngine;
 public class DragObject : MonoBehaviour
 
 {
-    private Vector3 mOffset;
-    private float mZCoord;
+    private Vector3 offset;
+    private float y;
+    private Vector3 screenPoint;
 
     void OnMouseDown()
     {
-        mZCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
-        mOffset = gameObject.transform.position - GetMouseAsWorldPoint();
+        screenPoint = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+        y = gameObject.transform.position.y;
+        offset = gameObject.transform.position - screenToWorld(Input.mousePosition.x, Input.mousePosition.y, y);
     }
-
-    private Vector3 GetMouseAsWorldPoint()
-    {
-        Vector3 mousePoint = Input.mousePosition;
-        mousePoint.z = mZCoord;
-        return Camera.main.ScreenToWorldPoint(mousePoint);
-    }
-
     void OnMouseDrag()
     {
-        transform.position = GetMouseAsWorldPoint() + mOffset;
+        Vector3 curPosition = screenToWorld(Input.mousePosition.x, Input.mousePosition.y, y) + offset;
+        transform.position = curPosition;
+    }
+    //transform screen point to world point with fixed y
+    private Vector3 screenToWorld(float screen_x, float screen_y, float world_y) {
+        Plane plane = new Plane(Vector3.up, new Vector3(0f, world_y, 0f));
+        Ray ray = Camera.main.ScreenPointToRay(new Vector3(screen_x, screen_y, 0));
+        if (plane.Raycast(ray, out float distance)) {
+            Vector3 worldPoint = ray.GetPoint(distance);
+            return worldPoint;
+        }
+        Debug.LogError("Did not intersect");
+        return Vector3.zero;
     }
 }
