@@ -69,6 +69,21 @@ public class WokController : MonoBehaviour
             {
                 return 1;
             }
+            else if ((foodNames[0] == "broccoli" && foodNames[1] == "pepper") ||
+                     (foodNames[0] == "pepper" && foodNames[1] == "broccoli"))
+            {
+                return 2;
+            }
+            else if ((foodNames[0] == "steak" && foodNames[1] == "pepper") ||
+                     (foodNames[0] == "pepper" && foodNames[1] == "steak"))
+            {
+                return 3;
+            }
+            else if ((foodNames[0] == "broccoli" && foodNames[1] == "steak") ||
+                     (foodNames[0] == "steak" && foodNames[1] == "broccoli"))
+            {
+                return 4;
+            }
         }
 
         return -1;
