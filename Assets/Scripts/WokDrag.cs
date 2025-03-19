@@ -6,7 +6,7 @@ public class WokDrag : MonoBehaviour
 {
     private Vector3 offset;
     private float z;
-    public float speed = 5f; // cap on speed
+    public float speed = 3f; // cap on speed
     private Rigidbody rb;
     private Vector3 targetPosition;
     private bool isDragging = false;
